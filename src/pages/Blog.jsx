@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Heading, Link, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Link, Text, VStack, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 
 const Blog = () => {
@@ -8,6 +8,12 @@ const Blog = () => {
     const storedPosts = JSON.parse(localStorage.getItem("blogPosts")) || [];
     setPosts(storedPosts);
   }, []);
+
+  const handleDelete = (index) => {
+    const updatedPosts = posts.filter((_, i) => i !== index);
+    setPosts(updatedPosts);
+    localStorage.setItem("blogPosts", JSON.stringify(updatedPosts));
+  };
 
   return (
     <Container maxW="container.xl">
@@ -32,6 +38,7 @@ const Blog = () => {
                 <Heading as="h3" size="md">{post.title}</Heading>
                 <Text>by {post.author}</Text>
                 <Text mt={2}>{post.content}</Text>
+                <Button colorScheme="red" size="sm" onClick={() => handleDelete(index)}>Delete</Button>
               </Box>
             ))
           )}
